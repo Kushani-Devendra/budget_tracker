@@ -13,16 +13,19 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { CircleOff, Loader2 } from "lucide-react";
+import { CircleOff, Loader2, PlusSquare } from "lucide-react";
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
 import {
   Dialog,
   DialogClose,
   DialogContent,
+  DialogDescription,
   DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
 } from "@/components/ui/dialog";
-import { CreateCategorySchemaType } from "@/schema/categories";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CreateCategory } from "../_actions/categories";
 import { Category } from "@/lib/generated/prisma";
@@ -30,6 +33,13 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useCallback, useState } from "react";
 import { useTheme } from "next-themes";
+import { TransactionType } from "@/lib/TransactionType";
+import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  CreateCategorySchema,
+  CreateCategorySchemaType,
+} from "@/schema/categories";
+import { cn } from "@/lib/utils";
 
 interface Props {
   type: TransactionType;
@@ -38,12 +48,16 @@ interface Props {
 
 function CreateCategoryDialog({ type, successCallback }: Props) {
   const [open, setOpen] = useState(false);
-  const form = useForm<CreateTransactionSchemaType>({
+  const form = useForm<CreateCategorySchemaType>({
     resolver: zodResolver(CreateCategorySchema),
     defaultValues: {
+      name: "",
+      icon: "",
       type,
     },
   });
+
+  const queryClient = useQueryClient();
 
   const theme = useTheme();
 
@@ -55,8 +69,6 @@ function CreateCategoryDialog({ type, successCallback }: Props) {
         icon: "",
         type,
       });
-
-      const queryClient = useQueryClient();
 
       toast.success(`Category ${data.name} created successfully`, {
         id: "create-category",
@@ -90,7 +102,34 @@ function CreateCategoryDialog({ type, successCallback }: Props) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogContent asChild>
+      <DialogTrigger asChild>
+        <Button
+          variant={"ghost"}
+          className="flex border-separate items-center justify-start rounded-none border-b px-3 py-3 text-muted-foreground"
+        >
+          <PlusSquare className="mr-2 h-4 w-4" />
+          Create new
+        </Button>
+      </DialogTrigger>
+
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>
+            Create a new
+            <span
+              className={cn(
+                "m-1",
+                type === "income" ? "text-emerald-500" : "text-red-500"
+              )}
+            >
+              {type}
+            </span>
+            category
+          </DialogTitle>
+          <DialogDescription>
+            Categories are used to group your transactions
+          </DialogDescription>
+        </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <FormField
@@ -132,7 +171,7 @@ function CreateCategoryDialog({ type, successCallback }: Props) {
                             </div>
                           ) : (
                             <div className="flex flex-col items-center gap-2">
-                              <CircleOff className="h-[48px]" />
+                              <CircleOff className="h-[48px] w-[48px]" />
                               <p className="text-xs text-muted-foreground">
                                 Click to selelct
                               </p>
@@ -159,24 +198,24 @@ function CreateCategoryDialog({ type, successCallback }: Props) {
             />
           </form>
         </Form>
-      </DialogContent>
-      <DialogFooter>
-        <DialogClose asChild>
-          <Button
-            type="button"
-            variant={"secondary"}
-            onClick={() => {
-              form.reset();
-            }}
-          >
-            Cancel
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button
+              type="button"
+              variant={"secondary"}
+              onClick={() => {
+                form.reset();
+              }}
+            >
+              Cancel
+            </Button>
+          </DialogClose>
+          <Button onClick={form.handleSubmit(onSubmit)} disabled={isPending}>
+            {!isPending && "Create"}
+            {isPending && <Loader2 className="animate-spin" />}
           </Button>
-        </DialogClose>
-        <Button onClick={form.handleSubmit(onSubmit)} disabled={isPending}>
-          {!isPending && "Create"}
-          {isPending && <Loader2 className="animate-spin" />}
-        </Button>
-      </DialogFooter>
+        </DialogFooter>
+      </DialogContent>
     </Dialog>
   );
 }
