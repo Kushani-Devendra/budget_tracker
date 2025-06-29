@@ -22,7 +22,7 @@ async function page() {
   }
 
   return (
-    <div className="container flex max-w-2xl flex-col items-center justify-between gap-4">
+    <div className="flex max-w-2xl flex-col items-center justify-between gap-4">
       <div>
         <h1 className="text-center text-3xl">
           Welcome,<span className="ml-2 font-bold">{user.firstName}!👋 </span>

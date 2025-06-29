@@ -7,7 +7,7 @@ import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { UserSettings } from "@/lib/generated/prisma";
 import { DateToUTCDate, GetFormatterForCurrency } from "@/lib/helpers";
-import { TransactionType } from "@/lib/TransactionType";
+import { TransactionType } from "@/lib/types";
 import { useQuery } from "@tanstack/react-query";
 import React, { useMemo } from "react";
 
@@ -112,9 +112,9 @@ function CategoriesCard({
 
                     <Progress
                       value={percentage}
-                      //   indicator={
-                      //     type === "income" ? "bg-emarald-500" : "bg-red-500"
-                      //   }
+                      indicator={
+                        type === "income" ? "bg-emerald-500" : "bg-red-500"
+                      }
                     />
                   </div>
                 );

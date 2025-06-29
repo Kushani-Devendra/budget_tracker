@@ -13,7 +13,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Category } from "@/lib/generated/prisma";
-import { TransactionType } from "@/lib/TransactionType";
+import { TransactionType } from "@/lib/types";
 import { useQuery } from "@tanstack/react-query";
 import React, { useCallback, useEffect } from "react";
 import CreateCategoryDialog from "./CreateCategoryDialog";

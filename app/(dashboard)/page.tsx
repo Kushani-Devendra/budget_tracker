@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import React from "react";
 import CreateTransactionDialog from "./_components/CreateTransactionDialog";
 import Overview from "./_components/Overview";
+import History from "./_components/History";
 
 async function page() {
   const user = await currentUser();
@@ -26,7 +27,7 @@ async function page() {
   return (
     <div className="h-full bg-background">
       <div className="border-b bg-card">
-        <div className="container flex flex-wrap items-center justify-between gap-6 p-8">
+        <div className="flex flex-wrap items-center justify-between gap-6 p-8">
           <p className="text-3xl font-bold">Hello, {user.firstName}!👋 </p>
 
           <div className="flex items-center gap-3">
@@ -34,9 +35,9 @@ async function page() {
               trigger={
                 <Button
                   variant={"outline"}
-                  className="border-emerald-500 bg-emerald-950 text-white hover:bg-emerald-700 hover:text-white"
+                  className="border-emerald-500 bg-emerald-800 text-white hover:bg-emerald-700 hover:text-white"
                 >
-                  New income
+                  New income 🤑
                 </Button>
               }
               type="income"
@@ -46,9 +47,9 @@ async function page() {
               trigger={
                 <Button
                   variant={"outline"}
-                  className="border-rose-500 bg-rose-950 text-white hover:bg-rose-700 hover:text-white"
+                  className="border-rose-500 bg-rose-800 text-white hover:bg-rose-700 hover:text-white"
                 >
-                  New expense
+                  New expense 😭
                 </Button>
               }
               type="expense"
@@ -58,6 +59,7 @@ async function page() {
       </div>
 
       <Overview userSettings={userSettings} />
+      <History userSettings={userSettings} />
     </div>
   );
 }

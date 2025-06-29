@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { TransactionType } from "@/lib/TransactionType";
+import { TransactionType } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import {
   CreateTransactionSchema,
